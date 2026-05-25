@@ -5,6 +5,7 @@ const {
   userDashboard,
   deleteUser,
   authenticateUser,
+  getDashboard,
 } = require("../controllers/user.controller");
 const router = express.Router();
 
@@ -63,5 +64,6 @@ router.get("/contact", (req, res) => {
 });
 
 router.post("/authenticate", authenticateUser);
+router.get("/user-dashboard", getDashboard)
 
 module.exports = router;
