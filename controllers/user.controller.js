@@ -1,4 +1,5 @@
 const userModel = require("../models/userModel");
+const jwt = require("jsonwebtoken")
 
 const landingPage = (req, res) => {
   // res.send("<h1>I am here now!!!!</h1>")
@@ -77,7 +78,10 @@ const authenticateUser = (req, res) => {
             console.log("Wrong Password");
             res.send({ message: "Wrong Credentials", status: false });
           } else {
-            res.send({ message: "Right Details", status: true });
+            let token = jwt.sign({email:req.body.email}, "secret", {expiresIn:"1h"})
+            console.log(token)
+            res.send({ message: "Right Details", status: true, token});
+            
           }
         });
       } else {
@@ -90,10 +94,26 @@ const authenticateUser = (req, res) => {
     });
 };
 
+const getDashboard = (req, res)=>{
+  let token = req.headers.authorization.split(" ")[1]
+  // console.log(token)
+  jwt.verify(token, "secret", (err,result)=>{
+    if(err){
+      console.log(err)
+      res.send({message: "Invalid or expired token", status: false})
+    }
+    else{
+      console.log(result)
+      res.send({message: "Token is Valid", status: true})
+    }
+  })
+}
+
 module.exports = {
   registerUser,
   userDashboard,
   deleteUser,
   landingPage,
   authenticateUser,
+  getDashboard
 };
