@@ -6,6 +6,7 @@ const {
   deleteUser,
   authenticateUser,
   getDashboard,
+  uploadFile,
 } = require("../controllers/user.controller");
 const router = express.Router();
 
@@ -65,5 +66,6 @@ router.get("/contact", (req, res) => {
 
 router.post("/authenticate", authenticateUser);
 router.get("/user-dashboard", getDashboard)
+router.post("/upload", uploadFile)
 
 module.exports = router;
