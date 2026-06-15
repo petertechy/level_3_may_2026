@@ -26,10 +26,24 @@ mongoose
     console.log(error);
   });
 
-app.listen(PORT, (error) => {
+let connection = app.listen(PORT, (error) => {
   if (error) {
     console.log(error);
   } else {
     console.log("Server is running on port " + PORT);
   }
 });
+
+let socketClient = require("socket.io")
+let io = socketClient(connection, {
+  cors: {origin: "*"}
+})
+
+io.on("connection", (socket)=>{
+  console.log("A user has connected")
+  console.log(socket.id)
+  socket.on("sendMsg", (message)=>{
+    console.log(message)
+    io.emit("broadcastMsg", message)
+  })
+})
